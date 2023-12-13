@@ -32,10 +32,6 @@ jobs:
         password: ${{ secrets.ACCESS_TOKEN }} # 你的个人访问令牌
 
     - name: Build and push
-      uses: docker/build-push-action@v2
-      with:
-        context: ./build
-        file: Dockerfile
-        tags: "ghcr.io/${{ github.repository_owner }}/kube-keepalived-vip-arm:${{ env.TIMESTAMP }}"
-        push: true
-        platforms: linux/arm64
+      run: |
+        cd build
+        docker buildx build . --file Dockerfile --tag ghcr.io/${{ github.repository_owner }}/kube-keepalived-vip-arm:${{ env.TIMESTAMP }} --platform linux/arm64 --push
